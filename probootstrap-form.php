@@ -17,34 +17,37 @@ if(isset($_POST['email'])) {
  
     // validation expected data exists
     if(!isset($_POST['name']) ||
-        !isset($_POST['mobile']) ||
         !isset($_POST['email']) ||
-        !isset($_POST['comments'])) {
+        !isset($_POST['subject']) ||
+        !isset($_POST['message'])) {
         died('We are sorry, but there appears to be a problem with the form you submitted.');       
     }
  
      
  
     $name_form = $_POST['name']; // required
-    $mobile_form = $_POST}['mobile']; // required
-    $email_from = $_POST['email']; // not required
-    $comments_form = $_POST['message']; // required
+    $email_form = $_POST}['email']; // required
+    $subject_from = $_POST['subject']; // not required
+    $message_form = $_POST['message']; // required
  
     $error_message = "";
     $email_exp = '/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/';
  
-  if(!preg_match($email_exp,$email_from)) {
-    $error_message .= 'The Email Address you entered does not appear to be valid.<br />';
-  
- 
     $string_exp = "/^[A-Za-z .'-]+$/";
- 
+
+  if(!preg_match($email_exp,$email_form)) {
+    $error_message .= 'The Email Address you entered does not appear to be valid.<br />';
+   
   if(!preg_match($string_exp,$name_form)) {
-    $error_message .= 'The First Name you entered does not appear to be valid.<br />';
+    $error_message .= 'The Name you entered does not appear to be valid.<br />';
   }
  
- if(!preg_match($string_exp,$mobile_form)) {
-    $error_message .= 'The First Name you entered does not appear to be valid.<br />';
+ if(!preg_match($string_exp,$subject_from)) {
+    $error_message .= 'The Subject you entered does not appear to be valid.<br />';
+  }
+   
+    if(!preg_match($string_exp,$message_form)) {
+    $error_message .= 'The Message you entered does not appear to be valid.<br />';
   }
  
   if(strlen($comments_form) < 2) {
@@ -67,8 +70,8 @@ if(isset($_POST['email'])) {
  
     $email_message .= "First Name: ".clean_string($name_form)."\n";
     $email_message .= "Email: ".clean_string($email_from)."\n";
-    $email_message .= "Telephone: ".clean_string($mobile_form)."\n";
-    $email_message .= "Comments: ".clean_string($comments_form)."\n";
+    $email_message .= "Subject: ".clean_string($subject_from)."\n";
+    $email_message .= "Message: ".clean_string($message_form)."\n";
  
 // create email headers
 $headers = 'From: '.$email_from."\r\n".
